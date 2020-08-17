@@ -64,15 +64,18 @@ export default {
       }
     },
     connect() {
-      this.socket = new SockJS("http://192.168.2.202:8084/data-info");
-      //this.socket = new SockJS("http://localhost:8081/data-info");
+      //this.socket = new SockJS("http://192.168.2.202:8084/data-info");
+      //this.socket = new SockJS("http://localhost:8084/livescore-websocket");
+      this.socket = new SockJS("http://45.114.48.150:8084/livescore-websocket");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
         {},
         frame => {
           this.connected = true;
           console.log(frame);
-          this.stompClient.subscribe("/info/values", tick => {
+          //this.stompClient.subscribe("/topic/public", tick => {
+            this.stompClient.subscribe("/topic/livescore", tick => {
+              console.log("Controler came here")
             console.log(tick);
             this.received_messages.push(JSON.parse(tick.body).content);
           });
